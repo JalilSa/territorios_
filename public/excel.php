@@ -1,4 +1,5 @@
 <?php
+session_set_cookie_params(['secure' => true, 'httponly' => true]);
 session_start();
 require '../vendor/autoload.php';
 
@@ -9,8 +10,15 @@ if (!isset($_SESSION['usuario_id'])) {
     header("location: index.php");
     exit();
 }
+$config = parse_ini_file('../config.ini', true);
 
-include_once '../src/db/config.php';
+$conn = new mysqli(
+    $config['database']['host'],
+    $config['database']['user'],
+    $config['database']['password'],
+    $config['database']['dbname']
+);
+
 
 $sql = "SELECT id_territorio, nombre_territorio, estado, ultima_fecha_completo, ultima_fecha_asignado FROM territorios";
 $result = $conn->query($sql);

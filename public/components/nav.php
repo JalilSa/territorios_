@@ -9,7 +9,8 @@ echo '
         <li><a href="datos.php">Datos</a></li>
         <li><a href="editar.php">Editar</a></li>
         <li><a href="components/logout.php">Cerrar Sesión</a></li>
-        <li><a href="excel.php">Exportar a Excel</a></li> <!-- Enlace para exportar a Excel -->
+        <li><a href="excel.php">Exportar a Excel</a></li>
+        <li><a href="refresh.php">Actualizar Territorios</a></li>
     </ul>
 </nav>
 ';

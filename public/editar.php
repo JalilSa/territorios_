@@ -1,11 +1,19 @@
 <?php
+session_set_cookie_params(['secure' => true, 'httponly' => true]);
 session_start();
 if (!isset($_SESSION['usuario_id'])){
     header("location: index.php");
 exit();
 }
 include 'components/nav.php';
-include_once '../src/db/config.php'; // Incluye la configuración de la base de datos
+$config = parse_ini_file('../config.ini', true);
+
+$conn = new mysqli(
+    $config['database']['host'],
+    $config['database']['user'],
+    $config['database']['password'],
+    $config['database']['dbname']
+);
 
 // Función para mostrar un mensaje de error
 function mostrarError($mensaje) {
@@ -52,7 +60,7 @@ if ($_SESSION['tipo_usuario']== 'admin'){
         $id_territorio = $_POST['id_territorio_fecha'];
         $fecha_asignacion = $_POST['fecha_asignacion'];
 
-        $stmt = $conn->prepare("UPDATE territorios SET ulrima_fecha_asignado = ? WHERE id_territorio = ?");
+       $stmt = $conn->prepare("UPDATE territorios SET ultima_fecha_asignado = ? WHERE id_territorio = ?");
         $stmt->bind_param("si",$fecha_asignacion,$id_territorio);
         $stmt->execute();
         $stmt->close();

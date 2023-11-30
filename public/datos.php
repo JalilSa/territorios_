@@ -1,14 +1,32 @@
 <?php
+session_set_cookie_params(['secure' => true, 'httponly' => true]);
 session_start();
 
 include 'components/nav.php';
+$config = parse_ini_file('../config.ini', true);
 
+$conn = new mysqli(
+    $config['database']['host'],
+    $config['database']['user'],
+    $config['database']['password'],
+    $config['database']['dbname']
+);
+
+
+$sqlTest = "SELECT 1 FROM territorios LIMIT 1";
+$resultTest = $conn->query($sqlTest);
+
+if ($resultTest) {
+    echo "<p>Conexión a la base de datos exitosa.</p>";
+} else {
+    echo "<p>Error en la conexión a la base de datos: " . $conn->error . "</p>";
+}
 if (!isset($_SESSION['usuario_id'])) {
     header("location: index.php");
     exit();
 }
 
-include_once '../src/db/config.php'; // Incluye la configuración de la base de datos
+
 
 $sql = "SELECT id_territorio, nombre_territorio, estado, ultima_fecha_completo, ultima_fecha_asignado FROM territorios";
 $result = $conn->query($sql);
